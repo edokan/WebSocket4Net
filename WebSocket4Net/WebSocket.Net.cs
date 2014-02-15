@@ -40,9 +40,20 @@ namespace WebSocket4Net
 
         }
 
+        public WebSocket(string uri, string subProtocol, List<KeyValuePair<string, string>> customUrlQueryItems = null, WebSocketVersion version = WebSocketVersion.None)
+            : this(uri, subProtocol, EmptyCookies, null, customUrlQueryItems, string.Empty, string.Empty, version)
+        {
+
+        }
+
         public WebSocket(string uri, string subProtocol = "", List<KeyValuePair<string, string>> cookies = null, List<KeyValuePair<string, string>> customHeaderItems = null, string userAgent = "", string origin = "", WebSocketVersion version = WebSocketVersion.None)
         {
             Initialize(uri, subProtocol, cookies, customHeaderItems, userAgent, origin, version);
+        }
+
+        public WebSocket(string uri, string subProtocol = "", List<KeyValuePair<string, string>> cookies = null, List<KeyValuePair<string, string>> customHeaderItems = null, List<KeyValuePair<string, string>> customUrlQueryItems = null, string userAgent = "", string origin = "", WebSocketVersion version = WebSocketVersion.None)
+        {
+            Initialize(uri, subProtocol, cookies, customHeaderItems, customUrlQueryItems, userAgent, origin, version);
         }
     }
 }
