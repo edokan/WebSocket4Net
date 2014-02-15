@@ -55,13 +55,12 @@ namespace WebSocket4Net
 
         internal string SubProtocol { get; private set; }
 
-        public IDictionary<string, object> Items { get; private set; }
+        internal IDictionary<string, object> Items { get; private set; }
 
         internal List<KeyValuePair<string, string>> Cookies { get; private set; }
 
         internal List<KeyValuePair<string, string>> CustomHeaderItems { get; private set; }
 
-        public List<KeyValuePair<string, string>> CustomUrlQueryItems { get; private set; }
 
         private int m_StateCode;
 
@@ -198,7 +197,7 @@ namespace WebSocket4Net
             }
 
             Version = version;
-            SetProtocolProcessor(GetProtocolProcessor(version));
+            ProtocolProcessor = GetProtocolProcessor(version);
 
             Cookies = cookies;
 
@@ -262,14 +261,6 @@ namespace WebSocket4Net
             EnableAutoSendPing = true;
         }
 
-        private void Initialize(string uri, string subProtocol, List<KeyValuePair<string, string>> cookies, List<KeyValuePair<string, string>> customHeaderItems, List<KeyValuePair<string, string>> customUrlQueryItems, string userAgent, string origin, WebSocketVersion version)
-        {
-            Initialize(uri, subProtocol, cookies, customHeaderItems, userAgent, origin, version);
-
-            if (customUrlQueryItems != null && customUrlQueryItems.Count > 0)
-                CustomUrlQueryItems = customUrlQueryItems;
-        }
-
         void client_DataReceived(object sender, DataEventArgs e)
         {
             OnDataReceived(e.Data, e.Offset, e.Length);
@@ -295,11 +286,6 @@ namespace WebSocket4Net
         void client_Connected(object sender, EventArgs e)
         {
             OnConnected();
-        }
-
-        public void SetProtocolProcessor(IProtocolProcessor processor)
-        {
-            this.ProtocolProcessor = processor;
         }
 
         internal bool GetAvailableProcessor(int[] availableVersions)

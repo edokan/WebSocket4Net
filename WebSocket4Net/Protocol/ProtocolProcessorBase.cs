@@ -5,7 +5,7 @@ using SuperSocket.ClientEngine;
 
 namespace WebSocket4Net.Protocol
 {
-    public abstract class ProtocolProcessorBase : IProtocolProcessor
+    abstract class ProtocolProcessorBase : IProtocolProcessor
     {
         protected const string HeaderItemFormat = "{0}: {1}";
 

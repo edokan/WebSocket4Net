@@ -15,7 +15,7 @@ namespace WebSocket4Net.Protocol
     /// <summary>
     /// http://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-10
     /// </summary>
-    public class DraftHybi10Processor : ProtocolProcessorBase
+    class DraftHybi10Processor : ProtocolProcessorBase
     {
         private const string m_Magic = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
@@ -46,34 +46,13 @@ namespace WebSocket4Net.Protocol
 
             websocket.Items[m_ExpectedAcceptKey] = expectedAccept;
 
-            string pathAndQuery = websocket.TargetUri.PathAndQuery;
-
-#if SILVERLIGHT
-            pathAndQuery = websocket.TargetUri.GetPathAndQuery();
-#endif
-
-            if (websocket.CustomUrlQueryItems != null)
-            {
-                for (var i = 0; i < websocket.CustomUrlQueryItems.Count; i++)
-                {
-                    var item = websocket.CustomUrlQueryItems[i];
-
-                    if (i == 0)
-                    {
-                        pathAndQuery += "?";
-                        pathAndQuery += item.Key + "=" + item.Value;
-                    }
-                    else
-                    {
-                        pathAndQuery += "&";
-                        pathAndQuery += item.Key + "=" + item.Value;
-                    }
-                }
-            }
-
             var handshakeBuilder = new StringBuilder();
 
-            handshakeBuilder.AppendFormatWithCrCf("GET {0} HTTP/1.1", pathAndQuery);
+#if SILVERLIGHT
+            handshakeBuilder.AppendFormatWithCrCf("GET {0} HTTP/1.1", websocket.TargetUri.GetPathAndQuery());
+#else
+            handshakeBuilder.AppendFormatWithCrCf("GET {0} HTTP/1.1", websocket.TargetUri.PathAndQuery);
+#endif
 
             handshakeBuilder.AppendWithCrCf("Upgrade: WebSocket");
             handshakeBuilder.AppendWithCrCf("Connection: Upgrade");
