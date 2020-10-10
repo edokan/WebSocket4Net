@@ -47,6 +47,7 @@ namespace WebSocket4Net.Protocol
             websocket.Items[m_ExpectedAcceptKey] = expectedAccept;
 
             string pathAndQuery = websocket.TargetUri.PathAndQuery;
+            var hasQueryString = !string.IsNullOrWhiteSpace(websocket.TargetUri.Query);
 
 #if SILVERLIGHT
             pathAndQuery = websocket.TargetUri.GetPathAndQuery();
@@ -58,7 +59,7 @@ namespace WebSocket4Net.Protocol
                 {
                     var item = websocket.CustomUrlQueryItems[i];
 
-                    if (i == 0)
+                    if (i == 0 && !hasQueryString)
                     {
                         pathAndQuery += "?";
                         pathAndQuery += item.Key + "=" + item.Value;
